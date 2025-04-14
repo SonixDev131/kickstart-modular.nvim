@@ -163,6 +163,15 @@ return {
         end,
       })
 
+      local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+      ---@diagnostic disable-next-line: duplicate-set-field
+      function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+        opts = opts or {}
+        opts.border = opts.border or 'rounded' -- Or any other border
+        opts.max_width = opts.max_width or 80
+        return orig_util_open_floating_preview(contents, syntax, opts, ...)
+      end
+
       -- Diagnostic Config
       -- See :help vim.diagnostic.Opts
       vim.diagnostic.config {
@@ -221,6 +230,8 @@ return {
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
+        --
+        volar = {},
 
         lua_ls = {
           -- cmd = { ... },
@@ -234,6 +245,26 @@ return {
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               -- diagnostics = { disable = { 'missing-fields' } },
             },
+          },
+        },
+
+        phpactor = {},
+      }
+
+      require('typescript-tools').setup {
+        filetypes = {
+          'javascript',
+          'javascriptreact',
+          'typescript',
+          'typescriptreact',
+          'vue',
+        },
+        settings = {
+          capabilities = capabilities,
+          root_dir = require('lspconfig.util').root_pattern('node_modules', '.git'),
+          single_file_support = false,
+          tsserver_plugins = {
+            '@vue/typescript-plugin',
           },
         },
       }
