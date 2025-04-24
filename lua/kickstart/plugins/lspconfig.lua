@@ -28,6 +28,9 @@ return {
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
+
+      -- Allows extra capabilities provided by blink.cmp
+      -- 'saghen/blink.cmp',
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -59,6 +62,22 @@ return {
       --    That is to say, every time a new file is opened that is associated with
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
       --    function will be executed to configure the current buffer
+      -- Create an autocmd to disable Ruff hover in favor of Pyright
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client == nil then
+            return
+          end
+          if client.name == 'ruff' then
+            -- Disable hover in favor of Pyright
+            client.server_capabilities.hoverProvider = false
+          end
+        end,
+        desc = 'LSP: Disable hover capability from Ruff',
+      })
+
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
@@ -155,11 +174,11 @@ return {
           -- code, if the language server you are using supports them
           --
           -- This may be unwanted, since they displace some of your code
-          if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
-            map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, '[T]oggle Inlay [H]ints')
-          end
+          -- if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+          --   map('<leader>th', function()
+          --     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+          --   end, '[T]oggle Inlay [H]ints')
+          -- end
         end,
       })
 
@@ -167,44 +186,45 @@ return {
       ---@diagnostic disable-next-line: duplicate-set-field
       function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
         opts = opts or {}
-        opts.border = opts.border or 'rounded' -- Or any other border
+        opts.border = opts.border or 'single' -- Or any other border
         opts.max_width = opts.max_width or 80
         return orig_util_open_floating_preview(contents, syntax, opts, ...)
       end
 
       -- Diagnostic Config
       -- See :help vim.diagnostic.Opts
-      vim.diagnostic.config {
-        severity_sort = true,
-        float = { border = 'rounded', source = 'if_many' },
-        underline = { severity = vim.diagnostic.severity.ERROR },
-        signs = vim.g.have_nerd_font and {
-          text = {
-            [vim.diagnostic.severity.ERROR] = '󰅚 ',
-            [vim.diagnostic.severity.WARN] = '󰀪 ',
-            [vim.diagnostic.severity.INFO] = '󰋽 ',
-            [vim.diagnostic.severity.HINT] = '󰌶 ',
-          },
-        } or {},
-        virtual_text = {
-          source = 'if_many',
-          spacing = 2,
-          format = function(diagnostic)
-            local diagnostic_message = {
-              [vim.diagnostic.severity.ERROR] = diagnostic.message,
-              [vim.diagnostic.severity.WARN] = diagnostic.message,
-              [vim.diagnostic.severity.INFO] = diagnostic.message,
-              [vim.diagnostic.severity.HINT] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
-          end,
-        },
-      }
+      -- vim.diagnostic.config {
+      --   severity_sort = true,
+      --   float = { border = 'rounded', source = 'if_many' },
+      --   underline = { severity = vim.diagnostic.severity.ERROR },
+      --   signs = vim.g.have_nerd_font and {
+      --     text = {
+      --       [vim.diagnostic.severity.ERROR] = '󰅚 ',
+      --       [vim.diagnostic.severity.WARN] = '󰀪 ',
+      --       [vim.diagnostic.severity.INFO] = '󰋽 ',
+      --       [vim.diagnostic.severity.HINT] = '󰌶 ',
+      --     },
+      --   } or {},
+      --   virtual_text = {
+      --     source = 'if_many',
+      --     spacing = 2,
+      --     format = function(diagnostic)
+      --       local diagnostic_message = {
+      --         [vim.diagnostic.severity.ERROR] = diagnostic.message,
+      --         [vim.diagnostic.severity.WARN] = diagnostic.message,
+      --         [vim.diagnostic.severity.INFO] = diagnostic.message,
+      --         [vim.diagnostic.severity.HINT] = diagnostic.message,
+      --       }
+      --       return diagnostic_message[diagnostic.severity]
+      --     end,
+      --   },
+      -- }
 
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
-      --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
-      --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
+      --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
+      --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
+      -- local capabilities = require('blink.cmp').get_lsp_capabilities()
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
@@ -232,7 +252,6 @@ return {
         --
         --
         volar = {},
-
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -243,12 +262,27 @@ return {
                 callSnippet = 'Replace',
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
+              diagnostics = { disable = { 'missing-fields' } },
             },
           },
         },
-
-        phpactor = {},
+        intelephense = {},
+        -- phpactor = {},
+        pyright = {
+          settings = {
+            pyright = {
+              -- Using Ruff's import organizer
+              disableOrganizeImports = true,
+            },
+            python = {
+              analysis = {
+                -- Ignore all files for analysis to exclusively use Ruff for linting
+                ignore = { '*' },
+              },
+            },
+          },
+        },
+        ruff = {}, -- Added Ruff LSP server for Python linting
       }
 
       require('typescript-tools').setup {

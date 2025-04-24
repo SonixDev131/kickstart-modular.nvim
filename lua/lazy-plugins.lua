@@ -33,11 +33,12 @@ require('lazy').setup({
 
   require 'kickstart/plugins/conform',
 
+  -- require 'kickstart/plugins/blink-cmp',
   require 'kickstart/plugins/cmp',
 
-  require 'kickstart/plugins/tokyonight',
+  -- require 'kickstart/plugins/tokyonight',
 
-  require 'kickstart/plugins/todo-comments',
+  -- require 'kickstart/plugins/todo-comments',
 
   require 'kickstart/plugins/mini',
 
@@ -56,7 +57,7 @@ require('lazy').setup({
   require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.neo-tree',
+  -- require 'kickstart.plugins.neo-tree',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
@@ -69,6 +70,8 @@ require('lazy').setup({
   -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
   -- you can continue same window with `<space>sr` which resumes last telescope search
 }, {
+  -- defaults = { lazy = true },
+  install = { colorscheme = { 'nvchad' } },
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
     -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table

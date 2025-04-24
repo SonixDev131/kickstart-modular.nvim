@@ -13,7 +13,7 @@ vim.opt.relativenumber = true
 vim.opt.mouse = 'a'
 
 -- Don't show the mode, since it's already in the status line
-vim.opt.showmode = true
+vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -66,11 +66,16 @@ vim.opt.scrolloff = 10
 -- See `:help 'confirm'`
 vim.opt.confirm = true
 
-vim.g.loaded_netrwPlugin = 1
-vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
+-- vim.g.loaded_netrw = 1
 
 -- views can only be fully collapsed with the global statusline
 vim.opt.laststatus = 3
-vim.opt.statusline = ' %{%v:lua.string.upper(mode())%} | %f %m %= %l:%c ♥ '
+-- vim.opt.statusline = ' %{%v:lua.string.upper(mode())%} | %f %m %= %l:%c ♥ '
+
+-- vim.opt.pumblend = 10 -- Popup blend
+vim.opt.pumheight = 10 -- Maximum number of entries in a popup
+
+vim.opt.termguicolors = true -- True color support
 
 -- vim: ts=2 sts=2 sw=2 et

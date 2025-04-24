@@ -22,6 +22,7 @@ return {
         'typescript',
         'php',
         'phpdoc',
+        'regex',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,

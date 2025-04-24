@@ -42,7 +42,7 @@ return {
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
 
-      cmp.setup {
+      local options = {
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -114,6 +114,9 @@ return {
           { name = 'nvim_lsp_signature_help' },
         },
       }
+
+      options = vim.tbl_deep_extend('force', options, require 'nvchad.cmp')
+      cmp.setup(options)
     end,
   },
 }
