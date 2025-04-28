@@ -5,6 +5,7 @@ return {
   config = function()
     require('avante').setup {
       provider = 'copilot',
+      cursor_applying_provider = 'groq', -- In this example, use Groq for applying, but you can also use any provider you want.
       auto_suggestions_provider = 'copilot',
       copilot = {
         model = 'claude-3.7-sonnet',
@@ -17,8 +18,18 @@ return {
         support_paste_from_clipboard = false,
         minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
         enable_token_counting = true, -- Whether to enable token counting. Default to true.
-        enable_cursor_planning_mode = false, -- Whether to enable Cursor Planning Mode. Default to false.
+        enable_cursor_planning_mode = true, -- Whether to enable Cursor Planning Mode. Default to false.
         enable_claude_text_editor_tool_mode = false, -- Whether to enable Claude Text Editor Tool Mode.
+      },
+      vendors = {
+        --- ... existing vendors
+        groq = { -- define groq provider
+          __inherited_from = 'openai',
+          api_key_name = 'GROQ_API_KEY',
+          endpoint = 'https://api.groq.com/openai/v1/',
+          model = 'llama-3.3-70b-versatile',
+          max_completion_tokens = 32768, -- remember to increase this value, otherwise it will stop generating halfway
+        },
       },
       -- The system_prompt type supports both a string and a function that returns a string. Using a function here allows dynamically updating the prompt with mcphub
       system_prompt = function()

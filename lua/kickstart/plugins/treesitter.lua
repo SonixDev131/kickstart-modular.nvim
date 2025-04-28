@@ -20,9 +20,11 @@ return {
         'vimdoc',
         'javascript',
         'typescript',
+        'vue',
         'php',
         'phpdoc',
         'regex',
+        'python',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
