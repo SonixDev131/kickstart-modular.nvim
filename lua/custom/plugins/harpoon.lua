@@ -34,7 +34,7 @@ return {
         function()
           require('harpoon'):list():select(i)
         end,
-        desc = 'Harpoon to File ' .. i,
+        desc = 'Harpoon to File [' .. i .. ']',
       })
     end
     return keys

@@ -17,12 +17,14 @@ return {
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
+      preset = 'helix',
       -- delay between pressing a key and opening which-key (milliseconds)
       -- this setting is independent of vim.opt.timeoutlen
       delay = 0,
       icons = {
         -- set icon mappings to true if you have a Nerd Font
-        mappings = vim.g.have_nerd_font,
+        -- mappings = vim.g.have_nerd_font,
+        mappings = false,
         -- If you are using a Nerd Font: set icons.keys to an empty table which will use the
         -- default which-key.nvim defined Nerd Font icons, otherwise define a string table
         keys = vim.g.have_nerd_font and {} or {
@@ -63,6 +65,9 @@ return {
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { '<leader>b', group = '[B]ufferline' },
+        { '<leader>a', group = '[A]vante' },
+        { '<leader>d', group = '[D]elete' },
+        { '<leader>g', group = 'Lazy [G]it' },
       },
     },
   },
