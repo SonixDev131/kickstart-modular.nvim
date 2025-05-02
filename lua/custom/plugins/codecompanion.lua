@@ -11,7 +11,7 @@ return {
     },
   },
   config = function()
-    local spinner = require 'custom.plugins.codecompanion.spinner'
+    local spinner = require 'custom.spinner'
     spinner:init()
     require('codecompanion').setup {
       adapters = {
@@ -28,6 +28,15 @@ return {
       strategies = {
         chat = {
           adapter = 'copilot',
+          tools = {
+            ['mcp'] = {
+              -- Prevent mcphub from loading before needed
+              callback = function()
+                return require 'mcphub.extensions.codecompanion'
+              end,
+              description = 'Call tools and resources from the MCP Servers',
+            },
+          },
           roles = {
             llm = function(adapter)
               local model_name = ''
@@ -44,7 +53,7 @@ return {
           },
         },
         inline = { adapter = 'copilot' },
-        agent = { adapter = 'copilot' },
+        cmd = { adapter = 'copilot' },
         keymaps = {
           send = {
             callback = function(chat)
@@ -57,14 +66,6 @@ return {
         },
       },
       extensions = {
-        mcphub = {
-          callback = 'mcphub.extensions.codecompanion',
-          opts = {
-            make_vars = true,
-            make_slash_commands = true,
-            show_result_in_chat = true,
-          },
-        },
         vectorcode = {
           opts = { add_tool = true, add_slash_command = true, tool_opts = {} },
         },

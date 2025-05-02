@@ -11,10 +11,14 @@ return {
   config = function()
     require('mcphub').setup {
       auto_approve = true, -- Auto approve mcp tool calls
-      -- Extensions configuration
       extensions = {
-        avante = {
-          make_slash_commands = true, -- make /slash commands from MCP server prompts
+        codecompanion = {
+          -- Show the mcp tool result in the chat buffer
+          show_result_in_chat = true,
+          -- Make chat #variables from MCP server resources
+          make_vars = true,
+          -- Create slash commands for prompts
+          make_slash_commands = true,
         },
       },
     }
