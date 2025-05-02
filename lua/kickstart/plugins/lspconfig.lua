@@ -266,7 +266,15 @@ return {
             },
           },
         },
-        intelephense = {},
+        intelephense = {
+          settings = {
+            intelephense = {
+              files = {
+                maxSize = 5000000,
+              },
+            },
+          },
+        },
         -- phpactor = {},
         pyright = {
           settings = {
@@ -283,6 +291,7 @@ return {
           },
         },
         ruff = {}, -- Added Ruff LSP server for Python linting
+        tailwindcss = {},
       }
 
       require('typescript-tools').setup {
