@@ -78,4 +78,7 @@ vim.opt.pumheight = 10 -- Maximum number of entries in a popup
 
 vim.opt.termguicolors = true -- True color support
 
+vim.opt.wrap = true
+vim.opt.textwidth = 80
+
 -- vim: ts=2 sts=2 sw=2 et

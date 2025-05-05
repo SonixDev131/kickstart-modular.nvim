@@ -187,7 +187,7 @@ return {
       function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
         opts = opts or {}
         opts.border = opts.border or 'single' -- Or any other border
-        opts.max_width = opts.max_width or 80
+        -- opts.max_width = opts.max_width or 80
         return orig_util_open_floating_preview(contents, syntax, opts, ...)
       end
 

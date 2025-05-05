@@ -1,7 +1,8 @@
 local M = {}
 
 M.base46 = {
-  -- theme = 'aquarium',
+  theme = 'chadracula',
+  transparency = true,
 }
 
 M.ui = {
