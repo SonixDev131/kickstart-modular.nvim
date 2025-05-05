@@ -266,16 +266,16 @@ return {
             },
           },
         },
-        intelephense = {
-          settings = {
-            intelephense = {
-              files = {
-                maxSize = 5000000,
-              },
-            },
-          },
-        },
-        -- phpactor = {},
+        -- intelephense = {
+        --   settings = {
+        --     intelephense = {
+        --       files = {
+        --         maxSize = 5000000,
+        --       },
+        --     },
+        --   },
+        -- },
+        phpactor = {},
         pyright = {
           settings = {
             pyright = {

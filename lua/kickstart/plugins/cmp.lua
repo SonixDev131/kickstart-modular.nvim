@@ -35,6 +35,9 @@ return {
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lsp-signature-help',
+      'hrsh7th/cmp-cmdline',
+      'hrsh7th/cmp-buffer',
+      'SergioRibera/cmp-dotenv',
     },
     config = function()
       -- See `:help cmp`
@@ -112,11 +115,36 @@ return {
           { name = 'luasnip' },
           { name = 'path' },
           { name = 'nvim_lsp_signature_help' },
+          { name = 'buffer' },
+          { name = 'dotenv' },
         },
       }
 
       options = vim.tbl_deep_extend('force', options, require 'nvchad.cmp')
       cmp.setup(options)
+
+      -- Add search (/) completions
+      cmp.setup.cmdline({ '/', '?' }, {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = 'buffer' },
+        },
+      })
+
+      -- Add command (:) completions
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' },
+        }, {
+          {
+            name = 'cmdline',
+            option = {
+              ignore_cmds = { 'Man', '!' },
+            },
+          },
+        }),
+      })
     end,
   },
 }
