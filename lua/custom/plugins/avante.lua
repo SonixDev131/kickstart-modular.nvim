@@ -13,6 +13,11 @@ return {
         model = 'claude-3.7-sonnet',
       },
 
+      behaviour = {
+        enable_cursor_planning_mode = true, -- Whether to enable Cursor Planning Mode. Default to false.
+        enable_claude_text_editor_tool_mode = false, -- Whether to enable Claude Text Editor Tool Mode.
+      },
+
       -- Vendor configurations
       vendors = {
         groq = {
@@ -26,10 +31,10 @@ return {
 
       rag_service = {
         enabled = true, -- Enables the RAG service
-        host_mount = '/home/yamada/', -- Host mount path for the rag service
+        host_mount = os.getenv 'HOME' .. '/projects', -- Host mount path for the rag service
         provider = 'openai', -- The provider to use for RAG service (e.g. openai or ollama)
-        llm_model = 'o3-mini', -- The LLM model to use for RAG service
-        embed_model = 'text-embedding-ada-002', -- The embedding model to use for RAG service
+        llm_model = '', -- The LLM model to use for RAG service
+        embed_model = '', -- The embedding model to use for RAG service
         endpoint = 'https://api.openai.com/v1', -- The API endpoint for RAG service
       },
 
